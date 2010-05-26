@@ -20,25 +20,26 @@ function Ball(args){
 			ctx.beginPath();
 			ctx.arc(this.m_pos.x, this.m_pos.y, this.m_radius, 0, Math.PI*2, true);
 			ctx.stroke();
-
+			ctx.restore();
 		}
+
 	}
 	
 	this.erase = function(){
 		var ctx = this.m_canvas.getContext('2d');
-		ctx.clearRect(this.m_pos.x, this.m_pos.y, this.m_radius*2, this.m_radius*2);
+		ctx.clearRect(this.m_pos.x-this.m_radius -1, this.m_pos.y-this.m_radius -1, this.m_radius*2 + 2, this.m_radius*2 + 2);
 		ctx.save();
 	}
 
 	this.bounceLogic = function(){
 
-	//	this.erase();
+		this.erase();
 		//bouncy
-		if(this.m_pos.x + this.m_size > this.m_canvas.width) { this.m_dx = -1; }
-		else if(this.m_pos.x == 1){ this.m_dx = 1}
+		if(this.m_pos.x + this.m_radius > this.m_canvas.width) { this.m_dx = -1; }
+		else if(this.m_pos.x-this.m_radius == 1){ this.m_dx = 1}
 		
-		if(this.m_pos.y + this.m_size > this.m_canvas.height) { this.m_dy = -1; }
-		else if(this.m_pos.y == 1){ this.m_dy = 1}
+		if(this.m_pos.y + this.m_radius > this.m_canvas.height) { this.m_dy = -1; }
+		else if(this.m_pos.y-this.m_radius == 1){ this.m_dy = 1}
 
 		this.m_pos.x += this.m_dx;
 		this.m_pos.y += this.m_dy;
@@ -63,7 +64,7 @@ function Pong(args){
 	this.m_canvas = args.canvas;
 	this.m_pos = args.pos;
 
-	var ballStartPos = {x: Math.floor(Math.random() * this.m_canvas.width), y: Math.floor(Math.random() * this.m_canvas.height)};
+	var ballStartPos =  {x: Math.floor(Math.random() * this.m_canvas.width), y: Math.floor(Math.random() * this.m_canvas.height)};
 	this.m_ball = new Ball({canvas: this.m_canvas, pos:ballStartPos});
 	this.m_paddle = new Paddle({canvas:this.m_canvas});
 	
